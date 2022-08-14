@@ -2,14 +2,19 @@ version: "3.9"
 
 services:
   db:
-    image: postgres
+    image: mysql:8
+    command: --default-authentication-plugin=mysql_native_password --mysqlx=0
     volumes:
-      - ./data/db:/var/lib/postgresql/data
+      - ./data/db:/var/lib/mysql/
+    restart: always
     env_file:
       - .env
+    ports:
+      - "3306:3306"
   web:
     build: ./src
-    command: sh -c "python manage.py collectstatic --no-input && python manage.py migrate && gunicorn --bind 0.0.0.0:8000 core.wsgi --workers=4"
+    command: sh -c "python manage.py collectstatic --no-input && python manage.py makemigrations && python manage.py migrate && gunicorn --bind 0.0.0.0:8000 core.wsgi --workers=4"
+    restart: always
     volumes:
       - ./src:/code
       - static_volume:/code/static/
@@ -20,6 +25,8 @@ services:
       - .env
     depends_on:
       - db
+    healthcheck:
+      start_period: 10s
   nginx:
     image: nginx
     restart: always
