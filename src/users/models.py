@@ -1,5 +1,4 @@
 import os
-
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils import timezone
@@ -14,6 +13,7 @@ class GenderType(models.IntegerChoices):
 class User(AbstractUser):
     """Модель пользователя juniorhunt"""
     first_name = models.CharField('Имя пользователя', max_length=30)
+    username = models.SlugField('Никнейм пользователя', max_length=20, unique=True)
     last_name = models.CharField('Фамилия пользователя', max_length=30)
     second_name = models.CharField('Отчество пользователя', max_length=30, blank=True, null=True)
     gender = models.IntegerField('Пол пользователя', choices=GenderType.choices, default=0)
@@ -21,9 +21,8 @@ class User(AbstractUser):
     phone = models.CharField('Номер телефона пользователя', max_length=15, unique=True)
     email = models.EmailField('Email пользователя', unique=True)
     is_staff = models.BooleanField('Персонал сайта', default=False)
-    created_at = models.DateTimeField('Дата создания аккаунта', auto_now_add=True)
-    updated_at = models.DateTimeField('Дата обновления данных аккаунта', auto_now=True)
 
+    USERNAME_FIELD = 'username'
     EMAIL_FIELD = 'email'
     REQUIRED_FIELDS = ['email', 'phone']
 
