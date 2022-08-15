@@ -10,6 +10,14 @@ class GenderType(models.IntegerChoices):
     WOMAN = 1
 
 
+def upload_to(instance, filename: str):
+    """Функция генерации пути аватарки"""
+    now = timezone.now()
+    base, extension = os.path.splitext(filename.lower())
+    milliseconds = now.microsecond // 1000
+    return f"users/{instance.user.pk}/{now:%Y%m%d%H%M%S}{milliseconds}{extension}"
+
+
 class User(AbstractUser):
     """Модель пользователя juniorhunt"""
     first_name = models.CharField('Имя пользователя', max_length=30)
@@ -20,11 +28,12 @@ class User(AbstractUser):
     address = models.TextField('Адрес проживания пользователя', null=True, blank=True)
     phone = models.CharField('Номер телефона пользователя', max_length=15, unique=True)
     email = models.EmailField('Email пользователя', unique=True)
+    avatar = models.ImageField('Аватар пользователя', upload_to=upload_to)
     is_staff = models.BooleanField('Персонал сайта', default=False)
 
     USERNAME_FIELD = 'username'
     EMAIL_FIELD = 'email'
-    REQUIRED_FIELDS = ['email', 'phone']
+    REQUIRED_FIELDS = ['email', 'phone', 'first_name', 'last_name', 'second_name', 'gender', 'address', 'is_staff', 'avatar']
 
     def get_full_name(self):
         """
@@ -40,25 +49,3 @@ class User(AbstractUser):
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
         db_table = 'users'
-
-
-def upload_to(instance, filename: str):
-    """Функция генерации пути аватарки"""
-    now = timezone.now()
-    base, extension = os.path.splitext(filename.lower())
-    milliseconds = now.microsecond // 1000
-    return f"users/{instance.user.pk}/{now:%Y%m%d%H%M%S}{milliseconds}{extension}"
-
-
-class UserAvatar(models.Model):
-    """Модель аватарки пользователя"""
-    avatar = models.ImageField('Аватар пользователя', upload_to=upload_to)
-    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name="Пользователь")
-
-    def __str__(self):
-        return f"{self.user.get_full_name()} avatar"
-
-    class Meta:
-        verbose_name = 'Аватар пользователя'
-        verbose_name_plural = 'Аватары пользователей'
-        db_table = 'users_avatar'
