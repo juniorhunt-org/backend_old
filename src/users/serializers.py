@@ -1,16 +1,14 @@
 from rest_framework.serializers import ModelSerializer
-
-from .models import User
-from .models import UserAvatar
+from .models import SchoolUser, EmployerUser
 
 
-class UserSerializer(ModelSerializer):
+class SchoolUserSerializer(ModelSerializer):
     class Meta:
-        model = User
-        fields = '__all__'
+        model = SchoolUser
+        fields = ('first_name', 'last_name', 'second_name', 'address', 'gender', 'avatar', 'description')
 
 
-class UserAvatarSerializer(ModelSerializer):
+class EmployerUserSerializer(ModelSerializer):
     class Meta:
-        model = UserAvatar
-        fields = '__all__'
+        model = EmployerUser
+        fields = ('first_name', 'last_name', 'second_name', 'address', 'description', 'avatar', 'company_name')

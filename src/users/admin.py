@@ -1,12 +1,17 @@
 from django.contrib import admin
 
-from .models import User
+from .models import SchoolUser, EmployerUser
 
 
-# Register your models here.
-@admin.register(User)
-class UsersAdmin(admin.ModelAdmin):
+@admin.register(SchoolUser)
+class SchoolUsersAdmin(admin.ModelAdmin):
     list_display = (
-    'id', 'first_name', 'last_name', 'second_name', 'email', 'phone', 'address')
-    list_display_links = ('id',)
-    search_fields = ('first_name', 'last_name', 'second_name', 'email', 'phone')
+        'id', 'first_name', 'last_name', 'second_name', 'address', 'gender', 'avatar', 'description')
+    search_fields = ('first_name', 'last_name', 'second_name', 'description', 'address')
+
+
+@admin.register(EmployerUser)
+class EmployerUsersAdmin(admin.ModelAdmin):
+    list_display = (
+        'id', 'first_name', 'last_name', 'second_name', 'address', 'description', 'company_name', 'avatar')
+    search_fields = ('first_name', 'last_name', 'second_name', 'description', 'address')
