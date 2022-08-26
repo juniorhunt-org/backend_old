@@ -1,6 +1,6 @@
 from django.db import models
 
-from users.models import SchoolUser, EmployerUser
+from users.models import ProfileUser
 
 DAYS_OF_WEEK = (
     (0, 'Monday'),
@@ -28,8 +28,9 @@ class AdCategory(models.Model):
 
 class Ad(models.Model):
     """Объявление"""
-    owner = models.ForeignKey(EmployerUser, on_delete=models.CASCADE)
-    users = models.ManyToManyField(SchoolUser)
+    owner = models.ForeignKey(ProfileUser, related_name="owner_ad_user", on_delete=models.CASCADE)
+    users = models.ManyToManyField(ProfileUser, related_name="users_ad_user", blank=True)
+    address = models.TextField('Адрес')
     limit = models.IntegerField(default=1, verbose_name='Количество')
     payment = models.IntegerField('Оплата за час работы RUB')
     title = models.CharField('Загаловок объявления', max_length=100)

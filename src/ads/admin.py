@@ -5,7 +5,7 @@ from .models import AdCategory, AdSchedule, Ad, AdPhoto
 
 @admin.register(Ad)
 class AdAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'owner', 'limit', 'payment', 'description', 'category')
+    list_display = ('id', 'title', 'owner', 'limit', 'payment', 'address', 'description', 'category')
     search_fields = ('title', 'payment', 'description')
     list_filter = ('category', 'limit', 'payment')
 

@@ -1,4 +1,5 @@
 import os
+
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils import timezone
@@ -36,40 +37,23 @@ class User(AbstractUser):
         db_table = 'users'
 
 
-class SchoolUser(models.Model):
+class ProfileUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     first_name = models.CharField('Имя пользователя', max_length=30)
     last_name = models.CharField('Фамилия пользователя', max_length=30)
     second_name = models.CharField('Отчество пользователя', max_length=30, blank=True, null=True)
-    gender = models.IntegerField('Пол пользователя', choices=GenderType.choices, default=0)
-    address = models.TextField('Адрес проживания пользователя', null=True, blank=True)
-    avatar = models.ImageField('Аватар пользователя', upload_to=upload_to, blank=True, null=True)
-    description = models.TextField('Описание пользователя')
+    is_company = models.BooleanField('Является ли пользователь представителем компании', default=False)
+    company_name = models.CharField('Название компании', max_length=50, blank=True, null=True)
+    description = models.TextField('Описание')
+    gender = models.IntegerField('Пол', choices=GenderType.choices, default=0)
+    contacts = models.TextField('Контакты', blank=True, null=True)
+    address = models.TextField('Адрес', null=True, blank=True)
+    avatar = models.ImageField('Аватар', upload_to=upload_to, blank=True, null=True)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
     class Meta:
-        verbose_name = 'Пользователь школьник'
-        verbose_name_plural = 'Пользователи школьники'
-        db_table = 'school_users'
-
-
-class EmployerUser(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    first_name = models.CharField('Имя пользователя', max_length=30)
-    last_name = models.CharField('Фамилия пользователя', max_length=30)
-    second_name = models.CharField('Отчество пользователя', max_length=30, blank=True, null=True)
-    company_name = models.CharField('Название компании', max_length=50)
-    description = models.TextField('Описание компании')
-    contacts = models.TextField('Контакты компании')
-    address = models.TextField('Адрес проживания пользователя', null=True, blank=True)
-    avatar = models.ImageField('Аватар пользователя', upload_to=upload_to, blank=True, null=True)
-
-    def __str__(self):
-        return f"{self.first_name} {self.last_name}"
-
-    class Meta:
-        verbose_name = 'Пользователь работодатель'
-        verbose_name_plural = 'Пользователи работодатели'
-        db_table = 'employer_users'
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
+        db_table = 'profile_users'

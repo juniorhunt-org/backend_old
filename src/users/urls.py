@@ -1,7 +1,6 @@
 from django.urls import path
-from .views import SchoolUserApi, EmployerUserApi
+from .views import ProfileUserApi
 
 urlpatterns = [
-    path('school_user/', SchoolUserApi.as_view()),
-    path('employer_user/', EmployerUserApi.as_view())
+    path('profile_user/', ProfileUserApi.as_view())
 ]
