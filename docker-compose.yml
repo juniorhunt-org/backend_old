@@ -38,7 +38,11 @@ services:
       - "80:80"
     depends_on:
       - web
-
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
 volumes:
   media_volume:
   static_volume:

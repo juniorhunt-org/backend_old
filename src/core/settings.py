@@ -21,7 +21,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'djoser',
     
-    'users.apps.UsersConfig'
+    'users.apps.UsersConfig',
+    'ads.apps.AdsConfig'
     
 ]
 
