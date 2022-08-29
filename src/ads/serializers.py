@@ -6,7 +6,7 @@ from .models import AdPhoto, Ad, AdSchedule, AdCategory
 class AdSerializer(ModelSerializer):
     class Meta:
         model = Ad
-        fields = ('id', 'title', 'description', 'owner', 'payment', 'category', 'address', 'users')
+        fields = ('id', 'title', 'description', 'owner', 'payment', 'category', 'address', 'users', 'limit')
 
 
 class AdPhotoSerializer(ModelSerializer):
