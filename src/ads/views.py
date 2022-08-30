@@ -1,5 +1,6 @@
 from rest_framework import status
 from rest_framework.authtoken.models import Token
+from rest_framework.generics import ListCreateAPIView, CreateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
@@ -16,7 +17,7 @@ class AdList(ModelViewSet):
     serializer_class = AdSerializer
 
 
-class AdUserApi(ModelViewSet):
+class AdUserApi(CreateAPIView):
     queryset = Ad.objects.all()
     serializer_class = AdUserSerializer
 
@@ -27,15 +28,17 @@ class AdUserApi(ModelViewSet):
         return user_id
 
     def create(self, request, *args, **kwargs):
-        ad_id = request.data['ad_id']
-        print(ad_id)
-        ad = Ad.objects.get(pk=ad_id)
-        user = ProfileUser.objects.get(id=self.get_user_id())
-        ad.users.add(user)
-        ad.save()
-        headers = self.get_success_headers(request.data)
-        serializer = AdUserSerializer(ad)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        try:
+            ad_id = request.data['ad_id']
+            ad = Ad.objects.get(pk=ad_id)
+            user = ProfileUser.objects.get(id=self.get_user_id())
+            ad.users.add(user)
+            ad.save()
+            headers = self.get_success_headers(request.data)
+            serializer = AdUserSerializer(ad)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        except:
+            return Response({'detail': 'Некорректные данные'}, status.HTTP_400_BAD_REQUEST)
 
 
 class AdPhotoList(ModelViewSet):
@@ -67,3 +70,16 @@ class AdCategoryList(ModelViewSet):
     permission_classes = [IsAdminOrReadOnly]
     queryset = AdCategory.objects.all()
     serializer_class = AdCategorySerializer
+
+
+class AdReplyUserApi(ListCreateAPIView):
+    serializer_class = AdSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_user_id(self) -> int:
+        user_id = Token.objects.get(key=self.request.auth.key).user_id
+        profile = ProfileUser.objects.get(user_id=user_id)
+        return profile.pk
+
+    def get_queryset(self):
+        return Ad.objects.filter(users__id=self.get_user_id())
