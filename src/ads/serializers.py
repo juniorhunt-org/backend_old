@@ -25,3 +25,9 @@ class AdScheduleSerializer(ModelSerializer):
     class Meta:
         model = AdSchedule
         fields = ('id', 'start', 'stop', 'week_day', 'ad')
+
+
+class AdUserSerializer(ModelSerializer):
+    class Meta:
+        model = Ad
+        fields = ('id', 'users')
