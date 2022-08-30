@@ -6,7 +6,6 @@ from .serializers import AdPhotoSerializer, AdCategorySerializer, AdSerializer, 
 
 
 class AdList(ModelViewSet):
-    permission_classes = [IsOwnerOrReadOnly]
     queryset = Ad.objects.all()
     serializer_class = AdSerializer
 
