@@ -23,15 +23,16 @@ class AdUserApi(CreateAPIView):
 
     permission_classes = [IsAuthenticated]
 
-    def get_user_id(self) -> int:
-        user_id = Token.objects.get(key=self.request.auth.key).user_id
-        return user_id
+    def get_user_profile(self) -> int:
+        user = Token.objects.get(key=self.request.auth.key).user
+        profile = ProfileUser.objects.get(user__username=user.username)
+        return profile
 
     def create(self, request, *args, **kwargs):
         try:
             ad_id = request.data['ad_id']
             ad = Ad.objects.get(pk=ad_id)
-            user = ProfileUser.objects.get(id=self.get_user_id())
+            user = self.get_user_profile()
             ad.users.add(user)
             ad.save()
             headers = self.get_success_headers(request.data)
