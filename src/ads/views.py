@@ -1,6 +1,6 @@
 from rest_framework import status
 from rest_framework.authtoken.models import Token
-from rest_framework.generics import ListCreateAPIView, CreateAPIView
+from rest_framework.generics import ListCreateAPIView, CreateAPIView, DestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
@@ -17,7 +17,7 @@ class AdList(ModelViewSet):
     serializer_class = AdSerializer
 
 
-class AdUserApi(CreateAPIView):
+class AdUserApi(CreateAPIView, DestroyAPIView):
     queryset = Ad.objects.all()
     serializer_class = AdUserSerializer
 
@@ -34,6 +34,19 @@ class AdUserApi(CreateAPIView):
             ad = Ad.objects.get(pk=ad_id)
             user = self.get_user_profile()
             ad.users.add(user)
+            ad.save()
+            headers = self.get_success_headers(request.data)
+            serializer = AdUserSerializer(ad)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        except:
+            return Response({'detail': 'Некорректные данные'}, status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, *args, **kwargs):
+        try:
+            ad_id = request.data['ad_id']
+            ad = Ad.objects.get(pk=ad_id)
+            user = self.get_user_profile()
+            ad.users.remove(user)
             ad.save()
             headers = self.get_success_headers(request.data)
             serializer = AdUserSerializer(ad)
