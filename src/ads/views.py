@@ -16,6 +16,14 @@ class AdList(ModelViewSet):
     queryset = Ad.objects.all()
     serializer_class = AdSerializer
 
+    def list(self, request, *args, **kwargs):
+        owner_id = self.request.query_params.get('owner')
+        queryset = self.queryset
+        if owner_id:
+            queryset = self.queryset.filter(owner_id=int(owner_id))
+        serializer = AdSerializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class AdUserApi(CreateAPIView, DestroyAPIView):
     queryset = Ad.objects.all()
