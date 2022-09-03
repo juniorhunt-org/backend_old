@@ -17,7 +17,12 @@ class ProfileUserApi(ModelViewSet):
         return user_id
 
     def get_queryset(self):
-        return ProfileUser.objects.all()
+        queryset = ProfileUser.objects.all()
+        print(self.request.auth)
+        if self.request.query_params.get('me') and self.request.auth is not None:
+            return queryset.filter(user_id=self.get_user_id())
+        else:
+            return queryset
 
     def create(self, request, *args, **kwargs):
         data = {**request.data, 'user_id': self.get_user_id()}
