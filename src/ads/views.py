@@ -13,16 +13,14 @@ from .serializers import AdPhotoSerializer, AdCategorySerializer, AdSerializer, 
 
 class AdList(ModelViewSet):
     permission_classes = []
-    queryset = Ad.objects.all()
     serializer_class = AdSerializer
 
-    def list(self, request, *args, **kwargs):
-        owner_id = self.request.query_params.get('owner')
-        queryset = self.queryset
-        if owner_id:
-            queryset = self.queryset.filter(owner_id=int(owner_id))
-        serializer = AdSerializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    def get_queryset(self):
+        owner = self.request.query_params.get('owner')
+        queryset = Ad.objects.all()
+        if owner:
+            return queryset.filter(owner_id=int(owner))
+        return queryset
 
 
 class AdUserApi(CreateAPIView, DestroyAPIView):
