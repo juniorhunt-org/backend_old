@@ -30,7 +30,7 @@ class AdUserApi(CreateAPIView, DestroyAPIView):
 
     def create(self, request, *args, **kwargs):
         try:
-            ad_id = self.request.query_params['ad_id']
+            ad_id = request.data['ad_id']
             ad = Ad.objects.get(pk=ad_id)
             user = self.get_user_profile()
             ad.users.add(user)
@@ -43,7 +43,7 @@ class AdUserApi(CreateAPIView, DestroyAPIView):
 
     def destroy(self, request, *args, **kwargs):
         try:
-            ad_id = request.data['ad_id']
+            ad_id = self.request.query_params['ad_id']
             ad = Ad.objects.get(pk=ad_id)
             user = self.get_user_profile()
             ad.users.remove(user)
