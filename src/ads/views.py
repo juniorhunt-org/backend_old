@@ -15,6 +15,8 @@ class AdList(ModelViewSet):
     permission_classes = []
     serializer_class = AdSerializer
 
+    http_method_names = ['get', 'put', 'patch', 'head', 'options', 'trace', 'delete', ]
+
     def get_queryset(self):
         owner = self.request.query_params.get('owner')
         queryset = Ad.objects.all()
