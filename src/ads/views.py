@@ -12,7 +12,7 @@ from .serializers import AdPhotoSerializer, AdCategorySerializer, AdSerializer, 
 
 
 class AdList(ModelViewSet):
-    permission_classes = []
+    permission_classes = [IsOwnerOrReadOnlySecond]
     serializer_class = AdSerializer
 
     http_method_names = ['get', 'put', 'patch', 'head', 'options', 'trace', 'delete', ]
