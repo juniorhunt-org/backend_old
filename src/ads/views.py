@@ -7,12 +7,12 @@ from rest_framework.viewsets import ModelViewSet
 
 from users.models import ProfileUser
 from .models import Ad, AdPhoto, AdSchedule, AdCategory
-from .permissions import IsOwnerOrReadOnlySecond, IsAdminOrReadOnly
+from .permissions import IsOwnerOrReadOnlySecond, IsAdminOrReadOnly, IsOwnerOrReadOnly
 from .serializers import AdPhotoSerializer, AdCategorySerializer, AdSerializer, AdScheduleSerializer, AdUserSerializer
 
 
 class AdList(ModelViewSet):
-    permission_classes = [IsOwnerOrReadOnlySecond]
+    permission_classes = [IsOwnerOrReadOnly]
     serializer_class = AdSerializer
 
     http_method_names = ['get', 'put', 'patch', 'head', 'options', 'trace', 'delete', ]
