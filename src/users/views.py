@@ -12,7 +12,7 @@ class ProfileUserApi(ModelViewSet):
     serializer_class = ProfileUserSerializer
     permission_classes = [IsOwnerOrReadOnly]
 
-    http_method_names = ['get', 'put', 'patch', 'head', 'options', 'trace', 'delete', ]
+    http_method_names = ['get', 'put', 'patch', 'head', 'options', 'trace', 'delete', 'post']
 
     def get_user_id(self) -> int:
         user_id = Token.objects.get(key=self.request.auth.key).user_id
