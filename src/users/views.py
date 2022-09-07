@@ -38,5 +38,10 @@ class ProfileUserApi(ModelViewSet):
 class NotificationTokenApi(ModelViewSet):
     http_method_names = ['get', 'put', 'patch', 'head', 'options', 'trace', 'delete', 'post']
     permission_classes = [IsOwnerOrReadOnly]
-    queryset = UserNotification.objects.all()
     serializer_class = UserNotificationSerializer
+
+    def get_queryset(self):
+        queryset = UserNotification.objects.all()
+        if self.request.query_params.get('user_id'):
+            queryset = queryset.filter(user_id=int(self.request.query_params.get('user_id')))
+        return queryset
