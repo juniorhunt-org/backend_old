@@ -1,6 +1,6 @@
 from rest_framework.serializers import ModelSerializer
 
-from .models import ProfileUser
+from .models import ProfileUser, UserNotification
 
 
 class ProfileUserSerializer(ModelSerializer):
@@ -11,3 +11,9 @@ class ProfileUserSerializer(ModelSerializer):
                   'gender',
                   'user_id',
                   'contacts', 'is_company')
+
+
+class UserNotificationSerializer(ModelSerializer):
+    class Meta:
+        model = UserNotification
+        fields = ('id', 'user', 'user_id', 'token')

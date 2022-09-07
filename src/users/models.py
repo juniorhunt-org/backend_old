@@ -57,3 +57,16 @@ class ProfileUser(models.Model):
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
         db_table = 'profile_users'
+
+
+class UserNotification(models.Model):
+    user = models.OneToOneField(ProfileUser, on_delete=models.CASCADE)
+    token = models.TextField('Токен пользователя')
+
+    def __str__(self):
+        return self.token
+
+    class Meta:
+        verbose_name = 'Токен уведомлений пользователя'
+        verbose_name_plural = 'Токены управления пользователей'
+        db_table = 'notification_token_users'
