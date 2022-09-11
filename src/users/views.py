@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from .models import ProfileUser, UserNotification
-from .permissions import IsOwnerOrReadOnly
+from .permissions import IsOwnerOrReadOnly, IsOwnerOrReadOnlyNotification
 from .serializers import ProfileUserSerializer, UserNotificationSerializer
 
 
@@ -37,7 +37,7 @@ class ProfileUserApi(ModelViewSet):
 
 class NotificationTokenApi(ModelViewSet):
     http_method_names = ['get', 'put', 'patch', 'head', 'options', 'trace', 'delete', 'post']
-    permission_classes = [IsOwnerOrReadOnly]
+    permission_classes = [IsOwnerOrReadOnlyNotification]
     serializer_class = UserNotificationSerializer
 
     def get_queryset(self):
