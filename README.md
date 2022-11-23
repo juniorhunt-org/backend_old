@@ -1,9 +1,5 @@
-# backend
-
-# Тз приложение "JuniorHunt"
-
-Функционал
-
+# Api приложения "JuniorHunt"
+# Тз
 - 1 Авторизация /Регистрация
   - 1.1 4 типа пользователей: <br>
     1)Школьник, 2)Работодатель, 3)Гость(не авторизованный пользователь) ,4) модератор
@@ -57,8 +53,40 @@
   - 6.2 при переходе на страницу блога будут показаны все статьи, при нажатии на ссылку будет показано видео и тест.
     19.08
 
+## Системные требования
+1. подключение к интернету
+2. наличие docker
+3. наличие docker-compose
+4. свободный 80 и 8080 порт
+
+## Инструкиця по установке docker
+Инструкции для OS:
+1. [Mac](https://www.8host.com/blog/rabota-s-fajlami-env-pri-pomoshhi-env-cmd/) (оф.)
+2. [Windows](https://docs.docker.com/desktop/install/windows-install/) (оф.)
+3. [Linux](https://docs.docker.com/desktop/install/linux-install/) (оф.)
+4. [Linux](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04-ru) (digitalocean)
+5. [Linux](https://wiki.archlinux.org/title/Docker_(%D0%A0%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9))(AUR)
+
 ## Инструкция по развертыванию проекта
 
-1. Установить [docker](https://www.docker.com/).
-2. `docker-compose build` - для того, чтобы собрать проекта
-3. `docker-compose up` - для запуска проекта
+1. Создать файл .env с переменными среды из шаблона.<br>Файл .env находиться в `.gitignore` , по этому тут можно хранить
+   ключи безопасности и пароль <br>
+
+
+    $ cp .env.example .env
+  [Подробнее](https://www.8host.com/blog/rabota-s-fajlami-env-pri-pomoshhi-env-cmd/)
+  про .env<br>
+
+
+2. заполните поля в `.env`:
+  - `MYSQL_DATABASE` : Название базы данных
+  - `MYSQL_USER` : Имя пользователя
+  - `MYSQL_PASSWORD` : Пароль пользователя
+  - `MYSQL_ROOT_PASSWORD` : Пароль для root
+  - `SECRET_KEY` : ключ безопасности
+
+3. для сборки и запуска проекта используйте:
+
+
+    docker-compose up --build
+
